@@ -1,0 +1,248 @@
+Table 1: SalesPeople
+
+Snum is Primary key
+
+Sname is Unique constraint
+
+Snum Sname City Comm
+
+1001 Peel. London .12
+
+1002  Serres Sanjose .13
+
+1004 Motika London .11
+
+1007 Rifkin Barcelona .15
+
+1003 Axelrod Newyork .10
+
+Create database sales;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sales              |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.05 sec)
+
+mysql> use sales;
+Database changed
+mysql> create table salespeople(
+    -> snum int(4),
+    -> sname varchar(10),
+    -> city varchar(10),
+    -> comm int(4)
+    -> );
+Query OK, 0 rows affected, 2 warnings (0.07 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_sales |
++-----------------+
+| salespeople     |
++-----------------+
+1 row in set (0.01 sec)
+
+mysql> insert into salespeople values(1001, 'Peel','London',12),(1002,'Serres','Sanjose',13),(1004,'Motika','London',11),(1007,'Rifkin','Barcelona',15),(1003,'Axelrod','Newyork',10);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from salespeople;
++------+---------+-----------+------+
+| snum | sname   | city      | comm |
++------+---------+-----------+------+
+| 1001 | Peel    | London    |   12 |
+| 1002 | Serres  | Sanjose   |   13 |
+| 1004 | Motika  | London    |   11 |
+| 1007 | Rifkin  | Barcelona |   15 |
+| 1003 | Axelrod | Newyork   |   10 |
++------+---------+-----------+------+
+5 rows in set (0.00 sec)
+
+Table 2: Customers
+
+Cnum is Primary Key
+
+City has not null constraint .
+
+Snum is foreign key constraint refers Snum column of SalesPeople table.
+
+Cnum Cname City Snum
+
+2001  Hoffman London 1001
+
+2002  Giovanni Rome 1003
+
+2003  Liu Sanjose 1002
+
+2004  Grass Berlin 1002
+
+2006 Clemens London 1001
+
+2008 Cisneros Sanjose 1007
+
+2007 Pereira Rome 1004
+
+
+mysql> create table customers(
+    -> cnum int(4),
+    -> cname varchar(10),
+    -> city varchar(10),
+    -> snum int(4)
+    -> );
+Query OK, 0 rows affected, 2 warnings (0.07 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_sales |
++-----------------+
+| customers       |
+| salespeople     |
++-----------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into customers values(2001,'Hoffman','London',1001),(2002,'Giovanni','Rome',1003),(2003,'Liu','Sanjose',1002),(2004,'Grass','Berlin',1002),(2006,'Clemens','London',1001),(2008,'Cisneros','Sanjose',1007),(2007,'Pereira','Rome',1004);
+Query OK, 7 rows affected (0.06 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select * from customers;
++------+----------+---------+------+
+| cnum | cname    | city    | snum |
++------+----------+---------+------+
+| 2001 | Hoffman  | London  | 1001 |
+| 2002 | Giovanni | Rome    | 1003 |
+| 2003 | Liu      | Sanjose | 1002 |
+| 2004 | Grass    | Berlin  | 1002 |
+| 2006 | Clemens  | London  | 1001 |
+| 2008 | Cisneros | Sanjose | 1007 |
+| 2007 | Pereira  | Rome    | 1004 |
++------+----------+---------+------+
+7 rows in set (0.05 sec)
+Table 3: Orders
+
+Onum is Primary key
+
+Cnum is foreign key refers to Cnum column of Customers table. Snum is foreign key refers Snum column of SalesPeople table.
+
+Onum Amt Odate Cnum Snum
+
+3001 18.69 3-10-1990 2008 1007
+
+3003 767.19 3-10-1990 2001 1001
+
+3002 1900.10 3-10-1990 2007 1004
+
+3005  5160.45 3-10-1990 2003 1002
+
+3006  1098.16 3-10-1990 2008 1007
+
+3009 1713.23 4-10-1990 2002 1003
+
+3007  75.75 4-10-1990 2004 1002
+
+3008  4273.00 5-10-1990 2006 1001
+
+3010  1309.95 6-10-1990 2004 1002
+
+3011  9891.88 6-10-1990 2006 1001
+
+mysql> create table orders(
+    -> onum int(4),
+    -> amt int(4),
+    -> odate date,
+    -> cnum int(4),
+    -> snum int(4)
+    -> );
+Query OK, 0 rows affected, 4 warnings (0.07 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_sales |
++-----------------+
+| customers       |
+| orders          |
+| salespeople     |
++-----------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into orders values(3001,18.69,'1990-10-3',2008,1007),(3003,767.19,'1990-10-3',2001,1001),(3002,1900.10,'1990-10-3',2007,1004),(3005,5160.45,'1990-10-3',2003,1002),(3006,1098.16,'1990-10-3',2003,1002),(3009,1713.23,'1990-10-4',2002,1003),(3007,75.75,'1990-10-4',2004,1002),(3008,4273.00,'1990-10-5',2006,1001),(3010,1309.95,'1990-10-6',2004,1002),(3011,9891.88,'1990-10-6',2006,1001);
+Query OK, 10 rows affected (0.06 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from orders;
++------+------+------------+------+------+
+| onum | amt  | odate      | cnum | snum |
++------+------+------------+------+------+
+| 3001 |   19 | 1990-10-03 | 2008 | 1007 |
+| 3003 |  767 | 1990-10-03 | 2001 | 1001 |
+| 3002 | 1900 | 1990-10-03 | 2007 | 1004 |
+| 3005 | 5160 | 1990-10-03 | 2003 | 1002 |
+| 3006 | 1098 | 1990-10-03 | 2003 | 1002 |
+| 3009 | 1713 | 1990-10-04 | 2002 | 1003 |
+| 3007 |   76 | 1990-10-04 | 2004 | 1002 |
+| 3008 | 4273 | 1990-10-05 | 2006 | 1001 |
+| 3010 | 1310 | 1990-10-06 | 2004 | 1002 |
+| 3011 | 9892 | 1990-10-06 | 2006 | 1001 |
++------+------+------------+------+------+
+10 rows in set (0.00 sec)
+
+On the basis of above tables perform given below questions
+
+ Count the number of Salesperson whose name begin with ‘a’/’A’.
+ 
+ 
+mysql> select count(*) from salespeople where sname like 'a%' or sname like 'A%';
++----------+
+| count(*) |
++----------+
+|        1 |
++----------+
+1 row in set (0.01 sec)
+
+ Display all the Salesperson whose all orders worth is more than Rs. 2000.
+
+ select salespeople.snum, salespeople.sname, orders.amt from salespeople inner join orders where orders.amt>2000;
++------+---------+------+
+| snum | sname   | amt  |
++------+---------+------+
+| 1001 | Peel    | 9892 |
+| 1001 | Peel    | 4273 |
+| 1001 | Peel    | 5160 |
+| 1002 | Serres  | 9892 |
+| 1002 | Serres  | 4273 |
+| 1002 | Serres  | 5160 |
+| 1004 | Motika  | 9892 |
+| 1004 | Motika  | 4273 |
+| 1004 | Motika  | 5160 |
+| 1007 | Rifkin  | 9892 |
+| 1007 | Rifkin  | 4273 |
+| 1007 | Rifkin  | 5160 |
+| 1003 | Axelrod | 9892 |
+| 1003 | Axelrod | 4273 |
+| 1003 | Axelrod | 5160 |
++------+---------+------+
+15 rows in set (0.05 sec)
+
+ Count the number of Salesperson belonging to Newyork.
+
+select count(*)from salespeople where city='Newyork';
++----------+
+| count(*) |
++----------+
+|        1 |
++----------+
+1 row in set (0.00 sec)
+
+ Display the number of Salespeople belonging to London and belonging to Paris.
+ 
+  select * from salespeople where city='London' and city='Paris';
+Empty set (0.00 sec)
+
